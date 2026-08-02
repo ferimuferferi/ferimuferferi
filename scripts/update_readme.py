@@ -46,6 +46,8 @@ while True:
         break
     for repo in resp:
         repo_count += 1
+        # TEMPORARY DEBUG — remove once stars is confirmed correct
+        print(f"DEBUG repo={repo.get('full_name')} fork={repo.get('fork')} stars={repo.get('stargazers_count')}")
         if not repo["fork"]:
             stars += repo["stargazers_count"]
     page += 1
