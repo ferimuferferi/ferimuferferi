@@ -38,7 +38,7 @@ while True:
         params={
             "per_page": 100,
             "page": page,
-            "affiliation": "owner",
+            "affiliation": "owner,collaborator",  # includes repos you didn't create but contribute to
             "visibility": "all",  # public AND private
         },
     ).json()
