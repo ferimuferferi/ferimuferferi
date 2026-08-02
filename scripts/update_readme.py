@@ -96,32 +96,6 @@ replacements = {
 for placeholder, value in replacements.items():
     content = re.sub(re.escape(placeholder), value, content)
 
-# ---- 6. Auto-align every dot-leader line to the same right-hand column ----
-# Instead of relying on manually-typed dots (which drift whenever a value's
-# length changes, e.g. Repos going from 9 -> 14 -> 15), recompute the dots
-# fresh every run so every line ends at the same width. The target width is
-# taken from one of the "----" separator lines already in the file, so it
-# always matches whatever width you're using in the template.
-def realign_dots(text):
-    lines = text.split("\n")
-
-    separator = next((l for l in lines if re.fullmatch(r"\. -{5,}", l)), None)
-    width = len(separator) if separator else 46
-
-    dot_line = re.compile(r"^(\. [^:]+: )\.+\s*(.+)$")
-    out = []
-    for line in lines:
-        m = dot_line.match(line)
-        if m:
-            prefix, value = m.group(1), m.group(2)
-            dots_needed = max(width - len(prefix) - len(value) - 1, 3)
-            out.append(prefix + "." * dots_needed + " " + value)
-        else:
-            out.append(line)
-    return "\n".join(out)
-
-content = realign_dots(content)
-
 with open("README.md", "w", encoding="utf-8") as f:
     f.write(content)
 
